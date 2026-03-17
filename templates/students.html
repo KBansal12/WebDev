@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Students - Course Management</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background: linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);
+color:white;
+min-height:100vh;
+}
+
+header{
+background:rgba(0,0,0,0.3);
+padding:20px;
+text-align:center;
+font-size:26px;
+font-weight:bold;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:30px;
+}
+
+.section{
+background:rgba(255,255,255,0.95);
+color:#333;
+padding:30px;
+margin-bottom:30px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+.section h2{
+margin-bottom:20px;
+color:#1a1a2e;
+}
+
+.stats{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+margin-bottom:20px;
+}
+
+.card{
+flex:1;
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:white;
+padding:25px;
+border-radius:12px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #ddd;
+text-align:left;
+}
+
+th{
+background:#667eea;
+color:white;
+}
+
+tr:hover{
+background:#f5f5f5;
+}
+
+form input{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+button{
+padding:12px;
+border:none;
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:white;
+font-weight:bold;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+.nav{
+text-align:center;
+margin-top:30px;
+}
+
+.nav a{
+text-decoration:none;
+padding:12px 20px;
+margin:10px;
+border-radius:8px;
+font-weight:600;
+}
+
+.btn-primary{
+background:#667eea;
+color:white;
+}
+
+.btn-secondary{
+background:#ddd;
+color:#333;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+🎓 Student Management
+</header>
+
+<div class="container">
+
+<!-- STUDENT OVERVIEW -->
+
+<div class="section">
+
+<h2>Student Overview</h2>
+
+<div class="stats">
+
+<div class="card">
+<h3>120</h3>
+<p>Total Students</p>
+</div>
+
+<div class="card">
+<h3>95</h3>
+<p>Active Students</p>
+</div>
+
+<div class="card">
+<h3>25</h3>
+<p>Graduated</p>
+</div>
+
+</div>
+
+</div>
+
+<!-- STUDENT LIST -->
+
+<div class="section">
+
+<h2>Student List</h2>
+
+<table>
+
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Course</th>
+</tr>
+
+<tr>
+<td>S101</td>
+<td>Khushboo Bansal</td>
+<td>khushboobansal792@gmail.com</td>
+<td>Web Development</td>
+</tr>
+
+<tr>
+<td>S102</td>
+<td>Rahul Sharma</td>
+<td>rahul@gmail.com</td>
+<td>Machine Learning</td>
+</tr>
+
+<tr>
+<td>S103</td>
+<td>Ananya Singh</td>
+<td>ananya@gmail.com</td>
+<td>Data Science</td>
+</tr>
+
+<tr>
+<td>S104</td>
+<td>Arjun Verma</td>
+<td>arjun@gmail.com</td>
+<td>Database Systems</td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- ADD STUDENT -->
+
+<div class="section">
+
+<h2>Add New Student</h2>
+
+<form>
+
+<input type="text" placeholder="Student ID" required>
+
+<input type="text" placeholder="Student Name" required>
+
+<input type="email" placeholder="Student Email" required>
+
+<input type="text" placeholder="Course Enrolled" required>
+
+<button type="submit">Add Student</button>
+
+</form>
+
+</div>
+
+<div class="nav">
+
+<a href="dashboard.html" class="btn-primary">Back to Dashboard</a>
+
+<a href="/" class="btn-secondary">Logout</a>
+
+</div>
+
+</div>
+
+</body>
+</html>

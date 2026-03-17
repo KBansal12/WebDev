@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports - Course Management</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background: linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);
+color:white;
+min-height:100vh;
+}
+
+header{
+background:rgba(0,0,0,0.3);
+padding:20px;
+text-align:center;
+font-size:26px;
+font-weight:bold;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:30px;
+}
+
+.section{
+background:rgba(255,255,255,0.95);
+color:#333;
+padding:30px;
+margin-bottom:30px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+.section h2{
+margin-bottom:20px;
+color:#1a1a2e;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th,td{
+padding:12px;
+text-align:left;
+border-bottom:1px solid #ddd;
+}
+
+th{
+background:#667eea;
+color:white;
+}
+
+tr:hover{
+background:#f2f2f2;
+}
+
+.stats{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+margin-top:20px;
+}
+
+.card{
+flex:1;
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:white;
+padding:25px;
+border-radius:12px;
+text-align:center;
+font-size:18px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.nav{
+text-align:center;
+margin-top:30px;
+}
+
+.nav a{
+text-decoration:none;
+padding:12px 20px;
+margin:10px;
+border-radius:8px;
+font-weight:600;
+}
+
+.btn-primary{
+background:#667eea;
+color:white;
+}
+
+.btn-secondary{
+background:#ddd;
+color:#333;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+📊 Reports & Analytics
+</header>
+
+<div class="container">
+
+<!-- SUMMARY CARDS -->
+
+<div class="section">
+<h2>System Overview</h2>
+
+<div class="stats">
+
+<div class="card">
+<h3>120</h3>
+<p>Total Students</p>
+</div>
+
+<div class="card">
+<h3>15</h3>
+<p>Total Courses</p>
+</div>
+
+<div class="card">
+<h3>34</h3>
+<p>Assignments Submitted</p>
+</div>
+
+<div class="card">
+<h3>10</h3>
+<p>Active Faculty</p>
+</div>
+
+</div>
+</div>
+
+<!-- STUDENT REPORT -->
+
+<div class="section">
+<h2>Student Reports</h2>
+
+<table>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Courses Enrolled</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Khushboo Bansal</td>
+<td>khushboobansal792@gmail.com</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>Rahul Sharma</td>
+<td>rahul@gmail.com</td>
+<td>2</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>Ananya Singh</td>
+<td>ananya@gmail.com</td>
+<td>4</td>
+</tr>
+
+</table>
+</div>
+
+<!-- COURSE REPORT -->
+
+<div class="section">
+<h2>Course Reports</h2>
+
+<table>
+<tr>
+<th>Course ID</th>
+<th>Course Name</th>
+<th>Instructor</th>
+<th>Students</th>
+</tr>
+
+<tr>
+<td>C101</td>
+<td>Web Development</td>
+<td>Dr. Mehta</td>
+<td>40</td>
+</tr>
+
+<tr>
+<td>C102</td>
+<td>Machine Learning</td>
+<td>Dr. Kapoor</td>
+<td>30</td>
+</tr>
+
+<tr>
+<td>C103</td>
+<td>Database Systems</td>
+<td>Prof. Singh</td>
+<td>50</td>
+</tr>
+
+</table>
+</div>
+
+<!-- ACTIVITY LOG -->
+
+<div class="section">
+<h2>Recent Activity</h2>
+
+<ul>
+<li>✔ Student Rahul registered</li>
+<li>✔ New course "AI Fundamentals" added</li>
+<li>✔ Assignment uploaded in Web Development</li>
+<li>✔ Faculty Dr. Mehta updated course content</li>
+</ul>
+
+</div>
+
+<div class="nav">
+
+<a href="dashboard.html" class="btn-primary">Back to Dashboard</a>
+
+<a href="/" class="btn-secondary">Logout</a>
+
+</div>
+
+</div>
+
+</body>
+</html>

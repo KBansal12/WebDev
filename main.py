@@ -1,21 +1,58 @@
+import email
+
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import Config, get_connection
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
 app = Flask(__name__)
 app.config.from_object(Config)
+#for prviding better security to the session we use flask_login
+#LoginManager main object is used to manage user sessions and authentication in a Flask application.
+red=LoginManager()
+red.init_app(app)
+red.login_view = "login"
 
+class User(UserMixin):
+    def __init__(self, id, name, email):
+        self.id = id
+        self.name = name
+        self.email = email # 🔹 Login Page
+    
+@red.user_loader #red object is the instance of LoginManager
+def load_user(user_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    sql = "SELECT * FROM users WHERE ID=%s, "
+    cursor.execute(sql, (user_id,))
+    user = cursor.fetchone()
+    conn.close()
+    if user:
+        return User(id=user['ID'], name=user['Name'], email=user['Email'])
+    return None
 
-# 🔹 Login Page
 @app.route('/')
 def login_page():
     return render_template("login.html")
-
+@app.route("/courses")
+def courses():
+    return render_template("courses.html")
+@app.route("/faculty")
+def faculty():
+    return render_template("faculty.html")
+@app.route("/students")
+def students():
+    return render_template("students.html")
 # 🔹 Register Page
 @app.route('/register')
 def register_page():
     return render_template("register.html")
-
+@app.route("/reports")
+def reports():
+    return render_template("reports.html")
+@app.route("/assignments")
+def assignments():
+    return render_template("assignments.html")
 # 🔹 Register User
 @app.route('/register', methods=['POST'])
 def register():
