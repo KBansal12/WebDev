@@ -34,15 +34,47 @@ def load_user(user_id):
 @app.route('/')
 def login_page():
     return render_template("login.html")
+
 @app.route("/courses")
 def courses():
     return render_template("courses.html")
+
 @app.route("/faculty")
 def faculty():
     return render_template("faculty.html")
-@app.route("/students")
+
+@app.route("/students", methods=["GET", "POST"])
 def students():
-    return render_template("students.html")
+    conn = get_connection()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    # ADD STUDENT
+    if request.method == "POST":
+        name = request.form["name"]
+        email = request.form["email"]
+        course = request.form["course"]
+
+        cursor.execute(
+            "INSERT INTO students (name, email, course) VALUES (%s, %s, %s)",
+            (name, email, course)
+        )
+        conn.commit()
+
+    # FETCH DATA
+    cursor.execute("SELECT * FROM students")
+    students = cursor.fetchall()
+
+    total_students = len(students)
+    active_students = total_students   # (you can improve later)
+    graduated_students = 0
+
+    return render_template(
+        "students.html",
+        students=students,
+        total_students=total_students,
+        active_students=active_students,
+        graduated_students=graduated_students
+    )
 # 🔹 Register Page
 @app.route('/register')
 def register_page():
@@ -53,6 +85,7 @@ def reports():
 @app.route("/assignments")
 def assignments():
     return render_template("assignments.html")
+
 # 🔹 Register User
 @app.route('/register', methods=['POST'])
 def register():
@@ -91,22 +124,73 @@ def login():
     if user and check_password_hash(user['password'], password):
         session['ID'] = user['ID']
         session['Name'] = user['Name']
-        return redirect(url_for('dashboard'))
+        return redirect("students.html")
     else:
         return "Invalid Email or Password"
 # 🔹 Dashboard
-@app.route('/dashboard')
-def dashboard():
-    if 'ID' in session:
-        return render_template("dashboard.html", name=session['Name'])
-    else:
-        return redirect(url_for('login_page'))
+@app.route("/admin")
+def admin():
+    conn = get_connection()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    cursor.execute("SELECT * FROM students")
+    students = cursor.fetchall()
+
+    students_count = len(students)
+
+    courses_count = 5
+    faculty_count = 3
+    assignments_count = 7
+
+    return render_template(
+        "dashboard.html",
+        students=students,
+        students_count=students_count,
+        courses_count=courses_count,
+        faculty_count=faculty_count,
+        assignments_count=assignments_count
+    )
 app.route('/about')
 def about():
     return render_template("about.html")
+
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('login_page'))
+
+@app.route("/delete_student/<int:id>")
+def delete_student(id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM students WHERE id=%s", (id,))
+    conn.commit()
+
+    return redirect("/admin")
+
+@app.route("/edit_student/<int:id>", methods=["GET", "POST"])
+def edit_student(id):
+    conn = get_connection()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    if request.method == "POST":
+        name = request.form["name"]
+        email = request.form["email"]
+        course = request.form["course"]
+
+        cursor.execute("""
+            UPDATE students 
+            SET name=%s, email=%s, course=%s 
+            WHERE id=%s
+        """, (name, email, course, id))
+
+        conn.commit()
+        return redirect("/admin")
+
+    cursor.execute("SELECT * FROM students WHERE id=%s", (id,))
+    student = cursor.fetchone()
+
+    return render_template("edit_student.html", student=student)
 if __name__ == "__main__":
     app.run(debug=True)

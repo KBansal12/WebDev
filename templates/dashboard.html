@@ -1,212 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Course Management Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
 
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-            display: flex;
-            min-height: 100vh;
-            color: #333;
-        }
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
-        /* Sidebar */
-        .sidebar {
-            width: 240px;
-            background: #111827;
-            padding: 30px 20px;
-            color: white;
-            position: fixed;
-            height: 100%;
-            overflow-y: auto;
-        }
+<!-- CHART JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        .sidebar h2 {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .sidebar a {
-            display: block;
-            padding: 12px;
-            margin: 10px 0;
-            color: #ccc;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
-
-        .sidebar a:hover {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        /* Main Content */
-        .main {
-            margin-left: 240px;
-            padding: 30px;
-            width: 100%;
-        }
-
-        .header {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            transition: 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card h3 {
-            color: #764ba2;
-            margin-bottom: 10px;
-        }
-
-        /* Table Section */
-        .section {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            margin-bottom: 30px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table th, table td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        table th {
-            background: #f4f4f4;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            color: white;
-            padding: 20px;
-        }
-
-    </style>
 </head>
+
 <body>
 
-    <div class="sidebar">
-        <h2>📚 CMS</h2>
-        <a href="#">Dashboard</a>
-        <a href="courses.html">Courses</a>
-        <a href="students.html">Students</a>
-        <a href="assignments.html">Assignments</a>
-        <a href="faculty.html">Faculty</a>
-        <a href="reports.html">Reports</a>
-        <a href="login.html">Logout</a>
-    </div>
+<!-- SIDEBAR -->
+<div class="sidebar">
+<h2>⚡ Admin</h2>
 
-    <div class="main">
+<a href="/admin">Dashboard</a>
+<a href="/students">Students</a>
+<a href="/courses">Courses</a>
+<a href="/faculty">Faculty</a>
+<a href="/assignments">Assignments</a>
+<a href="/reports">Reports</a>
+<a href="/">Logout</a>
 
-        <div class="header">
-            <h2>Welcome {{ name }}</h2>
-<a href="/logout">Logout</a>
-        </div>
+</div>
 
-        <div class="cards">
-            <div class="card">
-                <h3>Total Students</h3>
-                <p>1,250</p>
-            </div>
-            <div class="card">
-                <h3>Total Courses</h3>
-                <p>35</p>
-            </div>
-            <div class="card">
-                <h3>Assignments</h3>
-                <p>18</p>
-            </div>
-            <div class="card">
-                <h3>Faculty</h3>
-                <p>42</p>
-            </div>
-        </div>
+<!-- MAIN -->
+<div class="main">
 
-        <div class="section">
-            <h2>Recent Courses</h2>
-            <table>
-                <tr>
-                    <th>Course</th>
-                    <th>Instructor</th>
-                    <th>Status</th>
-                </tr>
-                <tr>
-                    <td>Data Structures</td>
-                    <td>Dr. Sharma</td>
-                    <td>Active</td>
-                </tr>
-                <tr>
-                    <td>Machine Learning</td>
-                    <td>Prof. Mehta</td>
-                    <td>Pending</td>
-                </tr>
-                <tr>
-                    <td>Web Development</td>
-                    <td>Ms. Kapoor</td>
-                    <td>Completed</td>
-                </tr>
-            </table>
-        </div>
+<!-- TOPBAR -->
+<div class="topbar">
+<h1>Admin Dashboard</h1>
+<input type="text" placeholder="Search...">
+</div>
 
-        <!-- Extra content to enable scrolling -->
-        <div class="section">
-            <h2>Announcements</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <p>New courses will be added next semester.</p>
-            <p>Mid-term exams start next week.</p>
-        </div>
+<!-- CARDS -->
+<div class="cards">
 
-        <div class="section">
-            <h2>Upcoming Events</h2>
-            <p>📅 Workshop on AI - March 12</p>
-            <p>📅 Hackathon - April 2</p>
-            <p>📅 Faculty Meeting - April 10</p>
-        </div>
+<div class="card">
+<h3>Total Students</h3>
+<p>{{ students_count }}</p>
+</div>
 
-        <div class="footer">
-            © 2026 Course Management System
-        </div>
+<div class="card">
+<h3>Total Courses</h3>
+<p>{{ courses_count }}</p>
+</div>
 
-    </div>
+<div class="card">
+<h3>Faculty</h3>
+<p>{{ faculty_count }}</p>
+</div>
 
+<div class="card">
+<h3>Assignments</h3>
+<p>{{ assignments_count }}</p>
+</div>
+
+</div>
+
+<!-- CHART -->
+<div class="section">
+<h2>Analytics Overview</h2>
+<canvas id="myChart"></canvas>
+</div>
+
+<!-- TABLE -->
+<div class="section">
+<h2>Students Data</h2>
+
+<table>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Course</th>
+<th>Actions</th>
+</tr>
+
+{% for student in students %}
+<tr>
+<td>{{ student.id }}</td>
+<td>{{ student.name }}</td>
+<td>{{ student.email }}</td>
+<td>{{ student.course }}</td>
+
+<td>
+<a href="/edit_student/{{ student.id }}">
+<button>Edit</button>
+</a>
+
+<a href="/delete_student/{{ student.id }}">
+<button>Delete</button>
+</a>
+</td>
+</tr>
+{% endfor %}
+
+</table>
+</div>
+
+</div>
+
+<!-- FIXED SCRIPT -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const ctx = document.getElementById('myChart');
+
+    // Direct Flask → JS values
+    const students = {{ students_count or 0 }};
+    const courses = {{ courses_count or 0 }};
+    const faculty = {{ faculty_count or 0 }};
+    const assignments = {{ assignments_count or 0 }};
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Students', 'Courses', 'Faculty', 'Assignments'],
+            datasets: [{
+                label: 'System Data',
+                data: [
+                    students,
+                    courses,
+                    faculty,
+                    assignments
+                ],
+                borderWidth: 1
+            }]
+        }
+    });
+
+});
+</script>
 </body>
 </html>
