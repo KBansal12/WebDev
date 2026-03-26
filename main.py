@@ -1,5 +1,5 @@
 import email
-
+import pymysql
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import Config, get_connection
@@ -46,7 +46,7 @@ def faculty():
 @app.route("/students", methods=["GET", "POST"])
 def students():
     conn = get_connection()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor = conn.cursor()
 
     # ADD STUDENT
     if request.method == "POST":
@@ -124,14 +124,14 @@ def login():
     if user and check_password_hash(user['password'], password):
         session['ID'] = user['ID']
         session['Name'] = user['Name']
-        return redirect("students.html")
+        return redirect(url_for('admin'))
     else:
         return "Invalid Email or Password"
 # 🔹 Dashboard
 @app.route("/admin")
 def admin():
     conn = get_connection()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM students")
     students = cursor.fetchall()
@@ -172,7 +172,7 @@ def delete_student(id):
 @app.route("/edit_student/<int:id>", methods=["GET", "POST"])
 def edit_student(id):
     conn = get_connection()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor = conn.cursor()
 
     if request.method == "POST":
         name = request.form["name"]
