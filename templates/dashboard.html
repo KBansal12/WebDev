@@ -1,141 +1,118 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends "base_admin.html" %}
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard</title>
+{% block title %}Admin Dashboard{% endblock %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-
-<!-- CHART JS -->
+{% block extra_head %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
 
-</head>
-
-<body>
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-<h2>⚡ Admin</h2>
-
-<a href="/admin">Dashboard</a>
-<a href="/students">Students</a>
-<a href="/courses">Courses</a>
-<a href="/faculty">Faculty</a>
-<a href="/assignments">Assignments</a>
-<a href="/reports">Reports</a>
-<a href="/">Logout</a>
-
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-<!-- TOPBAR -->
+{% block topbar %}
 <div class="topbar">
-<h1>Admin Dashboard</h1>
-<input type="text" placeholder="Search...">
+  <h1>Admin Dashboard</h1>
+  <input type="text" placeholder="Search...">
 </div>
+{% endblock %}
 
-<!-- CARDS -->
+{% block content %}
 <div class="cards">
+  <div class="card">
+    <h3>Total Students</h3>
+    <p>{{ students_count }}</p>
+  </div>
 
-<div class="card">
-<h3>Total Students</h3>
-<p>{{ students_count }}</p>
+  <div class="card">
+    <h3>Total Courses</h3>
+    <p>{{ courses_count }}</p>
+  </div>
+
+  <div class="card">
+    <h3>Faculty</h3>
+    <p>{{ faculty_count }}</p>
+  </div>
+
+  <div class="card">
+    <h3>Assignments</h3>
+    <p>{{ assignments_count }}</p>
+  </div>
 </div>
 
-<div class="card">
-<h3>Total Courses</h3>
-<p>{{ courses_count }}</p>
-</div>
-
-<div class="card">
-<h3>Faculty</h3>
-<p>{{ faculty_count }}</p>
-</div>
-
-<div class="card">
-<h3>Assignments</h3>
-<p>{{ assignments_count }}</p>
-</div>
-
-</div>
-
-<!-- CHART -->
 <div class="section">
-<h2>Analytics Overview</h2>
-<canvas id="myChart"></canvas>
+  <h2>Student Access</h2>
+
+  <div class="cards">
+    <div class="card">
+      <h3>Access Key</h3>
+      {% if student_access_key %}
+        <p class="mono">{{ student_access_key }}</p>
+      {% else %}
+        <p>Not generated yet</p>
+      {% endif %}
+
+      <form method="POST" action="/admin/generate-student-key" style="margin-top: 10px;">
+        <button type="submit">{% if student_access_key %}Regenerate{% else %}Generate{% endif %}</button>
+      </form>
+
+      <p style="margin-top:10px;">
+        Student login: <a href="/student" class="link-accent">/student</a>
+      </p>
+    </div>
+  </div>
 </div>
 
-<!-- TABLE -->
 <div class="section">
-<h2>Students Data</h2>
-
-<table>
-<tr>
-<th>ID</th>
-<th>Name</th>
-<th>Email</th>
-<th>Course</th>
-<th>Actions</th>
-</tr>
-
-{% for student in students %}
-<tr>
-<td>{{ student.id }}</td>
-<td>{{ student.name }}</td>
-<td>{{ student.email }}</td>
-<td>{{ student.course }}</td>
-
-<td>
-<a href="/edit_student/{{ student.id }}">
-<button>Edit</button>
-</a>
-
-<a href="/delete_student/{{ student.id }}">
-<button>Delete</button>
-</a>
-</td>
-</tr>
-{% endfor %}
-
-</table>
+  <h2>Analytics Overview</h2>
+  <canvas id="myChart"></canvas>
 </div>
 
+<div class="section">
+  <h2>Students Data</h2>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Courses</th>
+      <th>Actions</th>
+    </tr>
+    {% for student in students %}
+    <tr>
+      <td>{{ student.id }}</td>
+      <td>{{ student.name }}</td>
+      <td>{{ student.email }}</td>
+      <td>{{ student.courses or "-" }}</td>
+      <td>
+        <a href="/edit_student/{{ student.id }}"><button>Edit</button></a>
+        <form method="POST" action="/delete_student/{{ student.id }}" style="display:inline;">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
 </div>
+{% endblock %}
 
-<!-- FIXED SCRIPT -->
+{% block extra_scripts %}
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+  const ctx = document.getElementById('myChart');
 
-    const ctx = document.getElementById('myChart');
+  const students = {{ students_count or 0 }};
+  const courses = {{ courses_count or 0 }};
+  const faculty = {{ faculty_count or 0 }};
+  const assignments = {{ assignments_count or 0 }};
 
-    // Direct Flask → JS values
-    const students = {{ students_count or 0 }};
-    const courses = {{ courses_count or 0 }};
-    const faculty = {{ faculty_count or 0 }};
-    const assignments = {{ assignments_count or 0 }};
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Students', 'Courses', 'Faculty', 'Assignments'],
-            datasets: [{
-                label: 'System Data',
-                data: [
-                    students,
-                    courses,
-                    faculty,
-                    assignments
-                ],
-                borderWidth: 1
-            }]
-        }
-    });
-
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Students', 'Courses', 'Faculty', 'Assignments'],
+      datasets: [{
+        label: 'System Data',
+        data: [students, courses, faculty, assignments],
+        borderWidth: 1
+      }]
+    }
+  });
 });
 </script>
-</body>
-</html>
+{% endblock %}

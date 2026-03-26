@@ -1,170 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Management System - Login</title>
+{% extends "base_auth.html" %}
 
-    <style>
-        /* --- Your CSS remains EXACTLY SAME --- */
-        * { margin:0; padding:0; box-sizing:border-box; }
+{% block title %}Login{% endblock %}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            padding: 20px;
-        }
+{% block content %}
+<div class="auth-card">
+  <div class="auth-header">
+    <div class="auth-icon">A</div>
+    <h1>Admin Login</h1>
+    <p>Sign in to access the dashboard.</p>
+  </div>
 
-        .login-container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 50px 40px;
-            border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 420px;
-            position: relative;
-        }
+  {% if error %}
+    <div class="auth-error">{{ error }}</div>
+  {% endif %}
 
-        .logo { text-align:center; margin-bottom:30px; }
+  <form id="loginForm" action="/login" method="post" class="auth-form">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-        .logo-icon {
-            width:80px; height:80px;
-            background: linear-gradient(135deg,#667eea,#764ba2);
-            border-radius:50%;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            margin:0 auto 20px;
-            font-size:35px;
-            color:white;
-        }
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
-        .form-group { margin-bottom:25px; }
+    <button type="submit">Sign In</button>
 
-        .form-group label {
-            display:block;
-            margin-bottom:10px;
-            font-weight:600;
-            font-size:14px;
-        }
-
-        .form-group input {
-            width:100%;
-            padding:15px;
-            border:2px solid #e0e0e0;
-            border-radius:10px;
-            font-size:16px;
-            background:#f8f9fa;
-        }
-
-        .form-group input:focus {
-            border-color:#667eea;
-            background:white;
-        }
-
-        .login-btn {
-            width:100%;
-            padding:16px;
-            background: linear-gradient(135deg,#667eea,#764ba2);
-            color:white;
-            border:none;
-            border-radius:10px;
-            font-size:16px;
-            font-weight:600;
-            cursor:pointer;
-        }
-
-        .login-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .error-message {
-            background:#fee;
-            color:#c00;
-            padding:10px 15px;
-            border-radius:8px;
-            margin-bottom:20px;
-            font-size:14px;
-        }
-
-        .signup-link {
-            text-align:center;
-            margin-top:20px;
-        }
-
-        .signup-link a {
-            color:#667eea;
-            text-decoration:none;
-            font-weight:600;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="login-container">
-
-    <div class="logo">
-        <div class="logo-icon">📚</div>
-        <h1>Course Management</h1>
-        <p>Sign in to access your dashboard</p>
+    <div class="auth-links">
+      <span>Don’t have an account?</span>
+      <a href="/register">Sign up</a>
     </div>
+  </form>
 
-    <!-- Flask Error Message -->
-    {% if error %}
-    <div class="error-message">
-        {{ error }}
-    </div>
-    {% endif %}
-
-    <!-- Updated Form -->
-    <form id="loginForm" action="/login" method="post">
-
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email"
-                   placeholder="Enter your email" required>
-        </div>
-
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password"
-                   placeholder="Enter your password" required>
-        </div>
-
-        <button type="submit" class="login-btn">Sign In</button>
-
-        <div class="signup-link">
-            Don't have an account?
-            <a href="/register">Sign up</a>
-        </div>
-
-    </form>
-
+  <div class="auth-links" style="margin-top: 10px;">
+    <a href="/student">Student access</a>
+  </div>
 </div>
 
 <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-        if (email.length < 5) {
-            e.preventDefault();
-            alert("Please enter a valid email.");
-            return;
-        }
+  if (email.length < 5) {
+    e.preventDefault();
+    alert("Please enter a valid email.");
+    return;
+  }
 
-        if (password.length < 6) {
-            e.preventDefault();
-            alert("Password must be at least 6 characters.");
-            return;
-        }
-    });
+  if (password.length < 6) {
+    e.preventDefault();
+    alert("Password must be at least 6 characters.");
+    return;
+  }
+});
 </script>
+{% endblock %}
 
-</body>
-</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Dashboard{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Admin</h2>
+    <a href="/admin">Dashboard</a>
+    <a href="/students">Students</a>
+    <a href="/courses">Courses</a>
+    <a href="/admin/faculty">Faculty</a>
+    <a href="/assignments">Assignments</a>
+    <a href="/reports">Reports</a>
+    <a href="/about">About</a>
+    <a href="/logout">Logout</a>
+  </div>
+
+  <div class="main">
+    {% block topbar %}
+    <div class="topbar">
+      <h1>{% block page_title %}{% endblock %}</h1>
+    </div>
+    {% endblock %}
+
+    {% block content %}{% endblock %}
+  </div>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends "base_student.html" %}
+
+{% block title %}Student Dashboard{% endblock %}
+{% block page_title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<div class="section">
+  <h2>Your Courses</h2>
+
+  {% if courses|length == 0 %}
+    <p>No course access yet. Ask your faculty for a course key.</p>
+  {% else %}
+    <table>
+      <tr>
+        <th>Code</th>
+        <th>Title</th>
+        <th>Actions</th>
+      </tr>
+      {% for c in courses %}
+      <tr>
+        <td>{{ c.code or "-" }}</td>
+        <td>{{ c.title }}</td>
+        <td><a href="/student/course/{{ c.id }}"><button>Open</button></a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+</div>
+{% endblock %}

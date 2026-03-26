@@ -1,0 +1,56 @@
+{% extends "base_faculty.html" %}
+
+{% block title %}Faculty Dashboard{% endblock %}
+{% block page_title %}Faculty Dashboard{% endblock %}
+
+{% block content %}
+<div class="section">
+  <h2>Overview</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>{{ courses_count }}</h3>
+      <p>My Courses</p>
+    </div>
+    <div class="card">
+      <h3>{{ students_count }}</h3>
+      <p>Total Enrollments</p>
+    </div>
+    <div class="card">
+      <h3>{{ assignments_count }}</h3>
+      <p>Assignments</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>My Courses</h2>
+  <table>
+    <tr>
+      <th>Code</th>
+      <th>Title</th>
+      <th>Students</th>
+      <th>Access Key</th>
+    </tr>
+    {% for c in my_courses %}
+    <tr>
+      <td>{{ c.code or "-" }}</td>
+      <td>{{ c.title }}</td>
+      <td>{{ c.student_count }}</td>
+      <td>
+        {% if c.access_key %}
+          <span class="mono">{{ c.access_key }}</span>
+          <br>
+        {% endif %}
+        <form method="POST" action="/faculty/course/{{ c.id }}/generate-key" style="display:inline;">
+          <button type="submit">{% if c.access_key %}Regenerate{% else %}Generate{% endif %}</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  {% if my_courses|length == 0 %}
+    <p style="margin-top:10px;">No courses assigned yet. Create one from the Courses page.</p>
+  {% endif %}
+</div>
+{% endblock %}

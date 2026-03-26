@@ -1,0 +1,24 @@
+{% extends "base_auth.html" %}
+
+{% block title %}Student Access{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+  <div class="auth-header">
+    <div class="auth-icon">S</div>
+    <h1>Student Access</h1>
+    <p>Enter the key provided by the admin.</p>
+  </div>
+
+  {% if error %}
+    <div class="auth-error">{{ error }}</div>
+  {% endif %}
+
+  <form method="POST" class="auth-form">
+    <label for="access_key">Access Key</label>
+    <input id="access_key" type="text" name="access_key" placeholder="Enter access key" required autofocus>
+    <button type="submit">Continue</button>
+  </form>
+</div>
+{% endblock %}
+

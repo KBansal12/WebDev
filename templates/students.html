@@ -1,103 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base_admin.html" %}
 
-<title>Students</title>
+{% block title %}Students{% endblock %}
+{% block page_title %}Students{% endblock %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+{% block content %}
+{% if error %}
+  <div class="section">
+    <div class="auth-error">{{ error }}</div>
+  </div>
+{% endif %}
 
-</head>
-
-<body>
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-<h2>⚡ Admin</h2>
-
-<a href="/admin">Dashboard</a>
-<a href="/students">Students</a>
-<a href="/courses">Courses</a>
-<a href="/faculty">Faculty</a>
-<a href="/assignments">Assignments</a>
-<a href="/reports">Reports</a>
-<a href="/">Logout</a>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-<!-- STATS -->
 <div class="section">
-<h2>Student Overview</h2>
+  <h2>All Students</h2>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Courses</th>
+      <th>Actions</th>
+    </tr>
+    {% for s in students %}
+    <tr>
+      <td>{{ s.id }}</td>
+      <td>{{ s.name }}</td>
+      <td>{{ s.email }}</td>
+      <td>{{ s.courses or "-" }}</td>
+      <td>
+        <a href="/edit_student/{{ s.id }}"><button>Edit</button></a>
+        <form method="POST" action="/delete_student/{{ s.id }}" style="display:inline;">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
 
-<div class="cards">
-
-<div class="card">
-<h3>{{ total_students }}</h3>
-<p>Total Students</p>
+  {% if students|length == 0 %}
+    <p style="margin-top:10px;">No students found.</p>
+  {% endif %}
 </div>
 
-<div class="card">
-<h3>{{ active_students }}</h3>
-<p>Active Students</p>
-</div>
-
-<div class="card">
-<h3>{{ graduated_students }}</h3>
-<p>Graduated</p>
-</div>
-
-</div>
-</div>
-
-<!-- TABLE -->
 <div class="section">
-<h2>Student List</h2>
+  <h2>Add Student</h2>
+  <form method="POST" class="form">
+    <input type="text" name="name" placeholder="Student Name" required>
+    <input type="email" name="email" placeholder="Student Email" required>
 
-<table>
-<tr>
-<th>ID</th>
-<th>Name</th>
-<th>Email</th>
-<th>Course</th>
-<th>Actions</th>
-</tr>
+    <label style="display:block; margin-top:10px;">Enroll in Course</label>
+    <select name="course_id" required>
+      <option value="">Select course</option>
+      {% for c in courses %}
+        <option value="{{ c.id }}">{{ c.title }}</option>
+      {% endfor %}
+    </select>
 
-{% for student in students %}
-<tr>
-<td>{{ student.id }}</td>
-<td>{{ student.name }}</td>
-<td>{{ student.email }}</td>
-<td>{{ student.course }}</td>
-
-<td>
-<a href="/edit_student/{{ student.id }}"><button>Edit</button></a>
-<a href="/delete_student/{{ student.id }}"><button>Delete</button></a>
-</td>
-</tr>
-{% endfor %}
-
-</table>
+    <button type="submit">Add</button>
+  </form>
 </div>
+{% endblock %}
 
-<!-- FORM -->
-<div class="section">
-<h2>Add New Student</h2>
-
-<form method="POST">
-
-<input type="text" name="name" placeholder="Student Name" required>
-<input type="email" name="email" placeholder="Student Email" required>
-<input type="text" name="course" placeholder="Course" required>
-
-<button type="submit">Add Student</button>
-
-</form>
-</div>
-
-</div>
-
-</body>
-</html>

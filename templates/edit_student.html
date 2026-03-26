@@ -1,14 +1,28 @@
-{% extends "base.html" %}
+{% extends "base_admin.html" %}
+
+{% block title %}Edit Student{% endblock %}
+{% block page_title %}Edit Student{% endblock %}
 
 {% block content %}
 
 <div class="section">
 <h2>Edit Student</h2>
 
-<form method="POST">
+{% if error %}
+  <div class="auth-error">{{ error }}</div>
+{% endif %}
+
+<form method="POST" class="form">
 <input type="text" name="name" value="{{ student.name }}" required>
 <input type="email" name="email" value="{{ student.email }}" required>
-<input type="text" name="course" value="{{ student.course }}" required>
+
+<label style="display:block; margin-top:10px;">Course</label>
+<select name="course_id">
+  <option value="">-- None --</option>
+  {% for c in courses %}
+    <option value="{{ c.id }}" {% if current_course_id == c.id %}selected{% endif %}>{{ c.title }}</option>
+  {% endfor %}
+</select>
 
 <button type="submit">Update</button>
 </form>

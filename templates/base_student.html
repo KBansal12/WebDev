@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Student{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Student</h2>
+    <a href="/student/dashboard">Dashboard</a>
+    <a href="/assignments">Assignments</a>
+    <a href="/student/logout">Logout</a>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <h1>{% block page_title %}{% endblock %}</h1>
+    </div>
+
+    {% block content %}{% endblock %}
+  </div>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

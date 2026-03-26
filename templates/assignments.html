@@ -1,251 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Assignments - Course Management</title>
+{% extends layout %}
 
-<style>
+{% block title %}Assignments{% endblock %}
+{% block page_title %}Assignments{% endblock %}
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-body{
-font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-background: linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);
-color:white;
-min-height:100vh;
-}
-
-header{
-background:rgba(0,0,0,0.3);
-padding:20px;
-text-align:center;
-font-size:26px;
-font-weight:bold;
-}
-
-.container{
-max-width:1100px;
-margin:auto;
-padding:30px;
-}
-
-.section{
-background:rgba(255,255,255,0.95);
-color:#333;
-padding:30px;
-margin-bottom:30px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,0.3);
-}
-
-.section h2{
-margin-bottom:20px;
-color:#1a1a2e;
-}
-
-.stats{
-display:flex;
-gap:20px;
-flex-wrap:wrap;
-margin-bottom:20px;
-}
-
-.card{
-flex:1;
-background:linear-gradient(135deg,#667eea,#764ba2);
-color:white;
-padding:25px;
-border-radius:12px;
-text-align:center;
-box-shadow:0 5px 15px rgba(0,0,0,0.2);
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-th,td{
-padding:12px;
-border-bottom:1px solid #ddd;
-text-align:left;
-}
-
-th{
-background:#667eea;
-color:white;
-}
-
-tr:hover{
-background:#f5f5f5;
-}
-
-form input, form select{
-width:100%;
-padding:10px;
-margin:10px 0;
-border-radius:6px;
-border:1px solid #ccc;
-}
-
-button{
-padding:12px;
-border:none;
-background:linear-gradient(135deg,#667eea,#764ba2);
-color:white;
-font-weight:bold;
-border-radius:8px;
-cursor:pointer;
-}
-
-button:hover{
-opacity:0.9;
-}
-
-.nav{
-text-align:center;
-margin-top:30px;
-}
-
-.nav a{
-text-decoration:none;
-padding:12px 20px;
-margin:10px;
-border-radius:8px;
-font-weight:600;
-}
-
-.btn-primary{
-background:#667eea;
-color:white;
-}
-
-.btn-secondary{
-background:#ddd;
-color:#333;
-}
-
-</style>
-</head>
-
-<body>
-
-<header>
-📚 Assignments Management
-</header>
-
-<div class="container">
-
-<!-- ASSIGNMENT SUMMARY -->
+{% block content %}
+{% if error %}
+  <div class="section">
+    <div class="auth-error">{{ error }}</div>
+  </div>
+{% endif %}
 
 <div class="section">
+  <h2>Assignments</h2>
 
-<h2>Assignments Overview</h2>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Course</th>
+      <th>Title</th>
+      <th>Due Date</th>
+      <th>Created</th>
+    </tr>
+    {% for a in assignments %}
+    <tr>
+      <td>{{ a.id }}</td>
+      <td>{{ a.course_title }}</td>
+      <td>{{ a.title }}</td>
+      <td>{{ a.due_date or "-" }}</td>
+      <td>{{ a.created_at }}</td>
+    </tr>
+    {% endfor %}
+  </table>
 
-<div class="stats">
-
-<div class="card">
-<h3>12</h3>
-<p>Total Assignments</p>
+  {% if assignments|length == 0 %}
+    <p style="margin-top:10px;">No assignments found.</p>
+  {% endif %}
 </div>
 
-<div class="card">
-<h3>8</h3>
-<p>Submitted</p>
-</div>
-
-<div class="card">
-<h3>4</h3>
-<p>Pending</p>
-</div>
-
-</div>
-
-</div>
-
-<!-- ASSIGNMENT TABLE -->
-
+{% if can_create %}
 <div class="section">
+  <h2>Create Assignment</h2>
+  <form method="POST" class="form">
+    <label style="display:block; margin-top:10px;">Course</label>
+    <select name="course_id" required>
+      <option value="">Select course</option>
+      {% for c in courses %}
+        <option value="{{ c.id }}">{{ c.title }}</option>
+      {% endfor %}
+    </select>
 
-<h2>Assignment List</h2>
-
-<table>
-
-<tr>
-<th>ID</th>
-<th>Course</th>
-<th>Title</th>
-<th>Deadline</th>
-<th>Status</th>
-</tr>
-
-<tr>
-<td>1</td>
-<td>Web Development</td>
-<td>Build Flask App</td>
-<td>20 June</td>
-<td>Submitted</td>
-</tr>
-
-<tr>
-<td>2</td>
-<td>Machine Learning</td>
-<td>Regression Model</td>
-<td>25 June</td>
-<td>Pending</td>
-</tr>
-
-<tr>
-<td>3</td>
-<td>Database Systems</td>
-<td>Design ER Diagram</td>
-<td>28 June</td>
-<td>Submitted</td>
-</tr>
-
-</table>
-
+    <input type="text" name="title" placeholder="Assignment Title" required>
+    <input type="text" name="description" placeholder="Description (optional)">
+    <label style="display:block; margin-top:10px;">Due date (optional)</label>
+    <input type="date" name="due_date">
+    <button type="submit">Create</button>
+  </form>
 </div>
+{% endif %}
+{% endblock %}
 
-<!-- UPLOAD ASSIGNMENT -->
-
-<div class="section">
-
-<h2>Submit Assignment</h2>
-
-<form>
-
-<input type="text" placeholder="Assignment Title" required>
-
-<select>
-<option>Select Course</option>
-<option>Web Development</option>
-<option>Machine Learning</option>
-<option>Database Systems</option>
-</select>
-
-<input type="file">
-
-<button type="submit">Upload Assignment</button>
-
-</form>
-
-</div>
-
-<div class="nav">
-
-<a href="dashboard.html" class="btn-primary">Back to Dashboard</a>
-
-<a href="/" class="btn-secondary">Logout</a>
-
-</div>
-
-</div>
-
-</body>
-</html>
